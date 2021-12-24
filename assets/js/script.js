@@ -20,6 +20,21 @@ document.addEventListener('click', function (event) {
     }
 });
 
+// Adding task to list
+addTodoButton.addEventListener('click', e => {
+    e.preventDefault();
+    // clearing task viewa
+    taskView.innerText = "";
+    // adding task to array
+    if (!taskInput.value) return displayTodos();
+
+    tasks.push(taskInput.value);
+    // looping array and displaying tasks
+    incompleteNum.innerText = tasks.length - numCompleted;
+    displayTodos()
+})
+
+
 // Initial display of tasks on load  
 window.addEventListener('DOMContentLoaded', () => {
     incompleteNum.innerText = tasks.length
@@ -33,7 +48,6 @@ addNewTaskButton.addEventListener('click', () => {
 
 // Functions
 const displayTodos = () => {
-
     tasks.forEach(task => {
 
         let todo = document.createElement('div');
