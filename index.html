@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script defer src="assets/js/script.js"></script>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Task Area -->
+    <div class="sider">
+      <div class="dots">
+        <div class="dot1"></div>
+        <div class="dot2"></div>
+        <div class="dot3"></div>
+      </div>
+
+      <div class="my-name">
+        <h2>Hello, Ian</h2>
+      </div>
+
+      <div class="incomplete-task-up">
+        <div class="incomplete-task">
+
+          <p>You have <span id="incompleteNum"></span> <span style="color: #FFBD44;">Incompleted</span> Tasks :(</p>
+
+        </div>
+      </div>
+
+      <div class="uppertaskarea">
+        <div class="taskarea" data-task-view>
+          <!-- Tasks Inserted here -->
+        </div>
+      </div>
+
+      <div class="new-task-button">
+        <a href="#" data-add-new-task-button>Add Task</a>
+      </div>
+    </div>
+  </div>
+  <div id="addTask" class="addTask">
+    <form id="addTaskForm">
+      <input type="text" name="taskInput" id="taskInput" required placeholder="Type task here....">
+      <div class="add-task-button">
+        <a id="addTodoButton" href="#">Add Task</a>
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>
