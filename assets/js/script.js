@@ -5,6 +5,7 @@ let addForm = document.getElementById('addTaskForm');
 let addTodoButton = document.getElementById('addTodoButton');
 let taskInput = document.getElementById('taskInput');
 let incompleteNum = document.getElementById('incompleteNum');
+let completedTasksSpan = document.getElementById('completedTasksSpan');
 let tasks;
 
 // Event listeners
@@ -50,6 +51,9 @@ addNewTaskButton.addEventListener('click', () => {
 
 // Functions
 const displayTodos = () => {
+
+  let gotTasks = '<span style="color: #FFBD44;">Incompleted</span> Tasks :(';
+  let noTasks = '<span style="color: orange; font-weight: bold"> Incompleted</span> Tasks :)';
 
   localStorage.setItem("todo-arraylist", JSON.stringify(tasks));
 
@@ -101,6 +105,7 @@ const displayTodos = () => {
   }
 
   incompleteNum.innerText = tasks.length - numCompleted;
+  completedTasksSpan.innerHTML = (incompleteNum.innerText === '0') ? noTasks : gotTasks;
 
 }
 
@@ -112,7 +117,12 @@ const deleteTaskFunction = e => {
 
 const markAsComplete = e => {
   let todo = e.target.id;
-  todo = parseInt(todo);
-  tasks[todo].completed = true;
+  i = parseInt(todo);
+  if (tasks[i].completed === true) {
+    tasks[i].completed = false;
+  } else {
+    tasks[i].completed = true;
+  }
+
   displayTodos();
 }
