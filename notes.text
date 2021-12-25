@@ -1,7 +1,4 @@
-- make tasks objects with task and completed keys
-
 - save to session storage
 
-- num counter will work on array of objects on render
 
 

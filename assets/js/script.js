@@ -5,96 +5,114 @@ let addForm = document.getElementById('addTaskForm');
 let addTodoButton = document.getElementById('addTodoButton');
 let taskInput = document.getElementById('taskInput');
 let incompleteNum = document.getElementById('incompleteNum');
-let numCompleted = 0;
-let tasks = ['Send News Letters To Subscribers', 'Need To Create Spreadsheet Today', 'Fix The Bookshelf', 'Buy Some Apples'];
+let tasks;
 
 // Event listeners
 
 // Checking for click outside add section
 document.addEventListener('click', function (event) {
-    if (addTaskSection.style.display === 'none') return;
-    let isClickInsideElement = addTaskSection.contains(event.target);
-    let isClickInsideElementTwo = addNewTaskButton.contains(event.target)
-    if (!isClickInsideElement && !isClickInsideElementTwo) {
-        addTaskSection.style.display = 'none';
-    }
+  if (addTaskSection.style.display === 'none') return;
+  let isClickInsideElement = addTaskSection.contains(event.target);
+  let isClickInsideElementTwo = addNewTaskButton.contains(event.target)
+  if (!isClickInsideElement && !isClickInsideElementTwo) {
+    addTaskSection.style.display = 'none';
+  }
 });
 
 // Adding task to list
 addTodoButton.addEventListener('click', e => {
-    e.preventDefault();
-    // clearing task viewa
-    taskView.innerText = "";
-    // adding task to array
-    if (!taskInput.value) return displayTodos();
-
-    tasks.push(taskInput.value);
-    // looping array and displaying tasks
-    incompleteNum.innerText = tasks.length - numCompleted;
-    displayTodos()
+  e.preventDefault();
+  // clearing task viewa
+  taskView.innerText = "";
+  // adding task to array
+  if (!taskInput.value) return displayTodos();
+  tasks.push({ task: taskInput.value, completed: false });
+  displayTodos()
 })
-
 
 // Initial display of tasks on load  
 window.addEventListener('DOMContentLoaded', () => {
-    incompleteNum.innerText = tasks.length
-    displayTodos();
+
+  if (localStorage.getItem("todo-arraylist")) {
+    let retrievedData = localStorage.getItem("todo-arraylist");
+    tasks = JSON.parse(retrievedData);
+  } else {
+    tasks = [];
+  }
+
+  displayTodos();
 });
 
 // Opening input for new task
 addNewTaskButton.addEventListener('click', () => {
-    addTaskSection.style.display = 'block';
+  addTaskSection.style.display = 'block';
 })
 
 // Functions
 const displayTodos = () => {
-    tasks.forEach(task => {
 
-        let todo = document.createElement('div');
-        todo.className = 'tasks';
-        let todoP = document.createElement('p');
-        todoP.innerText = task;
-        let taskUpdDel = document.createElement('div');
-        taskUpdDel.className = 'task-update-delete';
-        let taskUpdate = document.createElement('div');
-        taskUpdate.className = 'update';
-        let taskDelete = document.createElement('div');
-        taskDelete.className = 'delete';
-        let updateAnchor = document.createElement('a');
-        updateAnchor.href = '#';
-        let updateIcon = document.createElement('i');
-        updateIcon.className = 'fas fa-check';
-        let deleteAnchor = document.createElement('a');
-        deleteAnchor.href = '#';
-        let deleteIcon = document.createElement('i');
-        deleteIcon.className = 'fas fa-times-circle';
-        deleteIcon.id = `delete${Date.now()}`
+  localStorage.setItem("todo-arraylist", JSON.stringify(tasks));
 
-        deleteIcon.addEventListener('click', deleteTaskFunction)
-        updateIcon.addEventListener('click', markAsComplete)
+  let numCompleted = 0;
+  taskView.innerText = ""
 
-        todo.appendChild(todoP);
-        todo.appendChild(taskUpdDel);
-        taskUpdDel.appendChild(taskUpdate);
-        taskUpdate.appendChild(updateAnchor);
-        updateAnchor.appendChild(updateIcon);
-        taskUpdDel.appendChild(taskDelete);
-        taskDelete.appendChild(deleteAnchor);
-        deleteAnchor.appendChild(deleteIcon);
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].completed) {
+      numCompleted++
+    };
+    let todo = document.createElement('div');
+    if (tasks[i].completed) todo.className = 'tasks completed';
+    else todo.className = 'tasks';
+    let todoP = document.createElement('p');
+    todoP.innerText = tasks[i].task;
+    let taskUpdDel = document.createElement('div');
+    taskUpdDel.className = 'task-update-delete';
+    let taskUpdate = document.createElement('div');
+    taskUpdate.className = 'update';
+    let taskDelete = document.createElement('div');
+    taskDelete.className = 'delete';
+    let updateAnchor = document.createElement('a');
+    updateAnchor.href = '#';
+    let updateIcon = document.createElement('i');
+    updateIcon.className = 'fas fa-check';
+    updateIcon.id = i
+    let deleteAnchor = document.createElement('a');
+    deleteAnchor.href = '#';
+    let deleteIcon = document.createElement('i');
+    deleteIcon.className = 'fas fa-times-circle';
+    deleteIcon.dataset.indexNumber = i;
 
-        taskView.appendChild(todo);
-        addTaskSection.style.display = 'none';
-        taskInput.value = "";
+    deleteIcon.addEventListener('click', deleteTaskFunction)
+    updateIcon.addEventListener('click', markAsComplete)
 
-    })
+    todo.appendChild(todoP);
+    todo.appendChild(taskUpdDel);
+    taskUpdDel.appendChild(taskUpdate);
+    taskUpdate.appendChild(updateAnchor);
+    updateAnchor.appendChild(updateIcon);
+    taskUpdDel.appendChild(taskDelete);
+    taskDelete.appendChild(deleteAnchor);
+    deleteAnchor.appendChild(deleteIcon);
+
+    taskView.appendChild(todo);
+    addTaskSection.style.display = 'none';
+    taskInput.value = "";
+
+  }
+
+  incompleteNum.innerText = tasks.length - numCompleted;
+
 }
 
 const deleteTaskFunction = e => {
-    e.target.parentElement.parentElement.parentElement.parentElement.remove()
+  let deleteTask = e.target.dataset.indexNumber;
+  tasks.splice(deleteTask - 1, 1);
+  displayTodos();
 }
 
 const markAsComplete = e => {
-    e.target.parentElement.parentElement.parentElement.parentElement.className = 'completed';
-    numCompleted++
-    incompleteNum.innerText = tasks.length - numCompleted;
+  let todo = e.target.id;
+  todo = parseInt(todo);
+  tasks[todo].completed = true;
+  displayTodos();
 }
