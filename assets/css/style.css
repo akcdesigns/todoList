@@ -416,13 +416,15 @@ input[type="submit"] {
 }
 
 #addTaskForm {
-    margin: 3rem;
-    padding: 3rem;
-    width: 100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  padding: 1rem;
 }
 
 #addTaskInput {
-    width: 80%;
+    width: 100%;
 }
 
 .add-task-button {
@@ -447,4 +449,20 @@ input[type="submit"] {
   -webkit-backdrop-filter: blur(0.5px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+@media screen and (max-width: 600px) {
+  .container,
+  .sider,
+  .addTask {
+    width: 100%;
+  }
+
+  #addTaskForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+    padding:20px;
+  }
 }
