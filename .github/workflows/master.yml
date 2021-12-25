@@ -17,4 +17,4 @@ jobs:
         server: 	ftp.ianlivingstone.uk
         username: github@ianlivingstone.uk
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /public_html/todolist/
+        server-dir: /todolist/
